@@ -1,1 +1,1 @@
-# hohotach-salute-backend
+# hohotach-salute-frontend
