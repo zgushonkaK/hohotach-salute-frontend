@@ -21,7 +21,7 @@ export class App extends React.Component {
     console.log('constructor');
 
     this.state = {
-      notes: [],
+      text: '',
     }
 
     this.assistant = initializeAssistant(() => this.getStateForAssistant());
@@ -29,9 +29,32 @@ export class App extends React.Component {
     
   }
 
+  fillTextField = () => {
+    //Мы тут типо как-то получаем анекдот и преобразовываем его в строку newText
+    let newText = '';
+    this.setState({text: newText});
+  }
+
   render(){
     return (
-        <div>
+        <div className="App">
+          <header className="App-header">
+            <p className="App-header-text">Tut budet logo</p>
+          </header>
+          <main className="App-main">
+            <textarea
+              value={this.state.text}
+              onChange={() => {}}
+              className="App-textarea"
+              rows={10}
+              readOnly
+            />
+          </main>
+          <footer className="App-footer">
+            <button onClick={this.fillTextField} className="App-button">
+              Сгенерируй анекдот
+            </button>
+          </footer>
         </div>
     )
 }
