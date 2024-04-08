@@ -1,18 +1,28 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align items horizontally center */
+  justify-content: center; /* Align items vertically center */
+  min-height: 100vh; /* Set minimum height to the viewport height */
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove default paddings */
+  box-sizing: border-box; /* Include paddings and borders in the element's total width and height */
+}
+
 .App {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
+  text-align: center; /* Align text in the center */
 }
 
 .App-header {
-  padding: 20px;
+  padding: 80px;
 }
 
 .App-header-text {
-  height: 80px;
+  font-size: 24px;
+  height: 40px;
 }
 
 .App-main {
@@ -32,7 +42,7 @@
 }
 
 .App-footer {
-  padding: 20px;
+  padding: 40px;
 }
 
 .App-button {
