@@ -1,7 +1,7 @@
-#require: js/actions.js
-#require: js/reply.js
+require: js/actions.js
+require: js/reply.js
 
-#require: sc/generateJoke.sc
+require: sc/generateJoke.sc
 
 theme: /
     state: Start

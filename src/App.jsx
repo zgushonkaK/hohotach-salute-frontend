@@ -31,7 +31,7 @@ export class App extends React.Component {
       console.log(`assistant.on(data)`, event);
       const { action } = event;
       console.log('action cur = ', action);
-      this.dispatchAssistantAction(action); //запуск в теории сгенерируй анекдот покажи расскажи выкинь выведи
+      this.dispatchAssistantAction(action); 
     });
 
     this.assistant.on("start", (event) => {
@@ -56,7 +56,6 @@ export class App extends React.Component {
 
   dispatchAssistantAction(action){
     console.log('dispatchAssistantAction', action);
-    /*
     if (action){
       switch (action.type) {
         case 'generate_joke':
@@ -66,7 +65,6 @@ export class App extends React.Component {
           throw new Error();
       }
     }
-    */
   }
 
   getJokeFromJson = () => {
