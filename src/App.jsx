@@ -26,6 +26,8 @@ export class App extends React.Component {
       favorites: [],
       user_id: '',
       joke_id: '',
+      joke_name: '',
+      joke_category: '',
       showFavorites: false,
     }
 
@@ -143,7 +145,7 @@ export class App extends React.Component {
         </div>
         <div className="App">
           <header className="App-header">
-            <p className="App-header-text">Tut budet logo</p>
+            <p className="App-header-text">ХОХОТАЧ</p>
           </header>
           <main className="App-main">
             <textarea

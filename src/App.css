@@ -18,12 +18,17 @@ body {
 }
 
 .App-header {
-  padding: 80px;
+  padding: 20px;
+  background-color: #363636;
+  border-radius: 25%;
+  margin-bottom: 20px;
 }
 
 .App-header-text {
-  font-size: 24px;
-  height: 40px;
+  font-size: 35px;
+  font-family: sans-serif;
+  height: 20px;
+  color: #14c92c;
 }
 
 .App-main {
@@ -35,9 +40,10 @@ body {
 
 .App-textarea {
   font-size: 18px;
-  padding: 10px;
-  border: 2px solid #ccc;
-  border-radius: 4px;
+  padding: 20px;
+  border: 1px solid #14c92c;
+  background-color: #a8a8a8;
+  border-radius: 15px;
   resize: none;
   width: 100%; 
 }
@@ -49,15 +55,15 @@ body {
 .App-button {
   font-size: 18px;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #14c92c;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
   cursor: pointer;
 }
 
 .App-button:hover {
-  background-color: #0056b3;
+  background-color: #0e7c1d;
 }
 
 .overlay {
