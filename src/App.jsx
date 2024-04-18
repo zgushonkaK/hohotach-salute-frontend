@@ -3,6 +3,7 @@ import {createAssistant, createSmartappDebugger,} from "@salutejs/client";
 
 import './App.css';
 import jsonData from './test-data.json';
+import logo from './images/HOHOTACHv2.png'
 
 const initializeAssistant = (getState/*: any*/) => {
   if (process.env.NODE_ENV === "development") {
@@ -75,6 +76,15 @@ export class App extends React.Component {
           this.setState({user_id: action.id});
           console.log('user_is', action.id);
           break;
+        case 'open_favorites':
+          this.toggleFavorites();
+          break;
+        case 'close_favorites':
+          this.toggleFavorites();
+          break;
+        case 'add_favorites':
+          this.addFavorite();
+          break;
         default:
           throw new Error();
       }
@@ -86,17 +96,24 @@ export class App extends React.Component {
     return content;
   }
 
+  getJokeNameFromJson = () =>{
+    const name = jsonData.Name;
+    return name;
+  }
+
   fillTextField() {
     //Мы тут типо как-то получаем анекдот и преобразовываем его в строку newText
     let newText = this.getJokeFromJson();
+    let newName = this.getJokeNameFromJson();
     this.setState({text: newText});
+    this.setState({joke_name: newName});
   }
 
   addFavorite = () => {
-    const { jokeName } = this.state;
-    if (jokeName.trim() !== '') {
+    const { joke_name } = this.state;
+    if (joke_name.trim() !== '') {
       this.setState((prevState) => ({
-        favorites: [...prevState.favorites, { id: Date.now(), name: jokeName }],
+        favorites: [...prevState.favorites, { id: Date.now(), name: joke_name }],
       }));
     }
   };
@@ -118,13 +135,13 @@ export class App extends React.Component {
     return (
       <body>
         <div>
-          <button style={{ position: 'absolute', top: 10, right: 10 }} onClick={this.toggleFavorites}>
-            Избранное
+          <button className="App-favorite-button" onClick={this.toggleFavorites}>
+            Избранное*
           </button>
           {this.state.showFavorites && (
-            <div className="overlay">
-              <div className="favorites-container">
-                <button className="close-button" onClick={this.toggleFavorites}>
+            <div className="App-overlay">
+              <div className="App-favorites-container">
+                <button className="App-close-button" onClick={this.toggleFavorites}>
                   &times;
                 </button>
                 <h3>Список избранного:</h3>
@@ -144,9 +161,9 @@ export class App extends React.Component {
           )}
         </div>
         <div className="App">
-          <header className="App-header">
-            <p className="App-header-text">ХОХОТАЧ</p>
-          </header>
+          <div className="App-logo">
+              <img src={logo} alt="" className="App-logo-pic" />
+          </div>
           <main className="App-main">
             <textarea
               value={this.state.text}

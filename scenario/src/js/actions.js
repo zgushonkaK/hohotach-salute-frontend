@@ -10,3 +10,21 @@ function initializeUser(id, context){
         id: id
     }, context);
 }
+
+function openFavorites(context){
+    addAction({
+        type: "open_favorites"
+    }, context);
+}
+
+function closeFavorites(context){
+    addAction({
+        type: "close_favorites"
+    }, context);
+}
+
+function addFavorite(context){
+    addAction({
+        type: "add_favorite"
+    }, context);
+}

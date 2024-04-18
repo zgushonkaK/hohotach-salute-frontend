@@ -5,6 +5,9 @@ require: js/actions.js
 require: js/reply.js
 
 require: sc/generateJoke.sc
+require: sc/openFavorites.sc
+require: sc/addFavorite.sc
+require: sc/closeFavorites.sc
 
 theme: /
     state: Start
