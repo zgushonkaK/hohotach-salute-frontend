@@ -1,5 +1,8 @@
 import React from "react";
 import {createAssistant, createSmartappDebugger,} from "@salutejs/client";
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
 
 import './App.css';
 import jsonData from './test-data.json';
@@ -149,13 +152,15 @@ export class App extends React.Component {
                   {this.state.favorites.map((favorite) => (
                     <li key={favorite.id}>
                       {favorite.name}{' '}
-                      <button onClick={() => this.removeFavorite(favorite.id)}>
-                        Удалить
-                      </button>
+                      <IconButton aria-label="delete" onClick={() => this.removeFavorite(favorite.id)}>
+                        <DeleteIcon />
+                      </IconButton>
                     </li>
                 ))}
                 </ul>
-                <button onClick={this.addFavorite}>Добавить в избранное</button>
+                <IconButton aria-label="add" onClick={this.addFavorite}>
+                  <AddIcon />
+                </IconButton>
               </div>
             </div>
           )}
