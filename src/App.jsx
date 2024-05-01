@@ -1,5 +1,6 @@
 import React from "react";
 import {createAssistant, createSmartappDebugger,} from "@salutejs/client";
+import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
@@ -94,22 +95,30 @@ export class App extends React.Component {
     }
   }
 
+  /*
   getJokeFromJson = () => {
-    const content = jsonData.content;
-    return content;
+    const response = axios.get('http://localhost:8000/user/get_joke_from_api');
+    return response.content;
   }
-
+  */
   getJokeNameFromJson = () =>{
     const name = jsonData.Name;
     return name;
   }
 
-  fillTextField() {
+  fillTextField = async () => {
     //Мы тут типо как-то получаем анекдот и преобразовываем его в строку newText
-    let newText = this.getJokeFromJson();
-    let newName = this.getJokeNameFromJson();
-    this.setState({text: newText});
-    this.setState({joke_name: newName});
+    //let newText = this.getJokeFromJson();
+    //let newName = this.getJokeNameFromJson();
+    console.log('zhopa');
+    try{
+      const response = await axios.get('http://localhost:8000/user/get_joke_from_api');
+      this.setState({text: response.data.content});
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+    //this.setState({joke_name: newName});
   }
 
   addFavorite = () => {
