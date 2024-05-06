@@ -31,8 +31,7 @@ export class App extends React.Component {
       favorites: [],
       user_id: '',
       joke_id: '',
-      joke_name: '',
-      joke_category: '',
+      alias: '',
       showFavorites: false,
     }
 
@@ -54,7 +53,29 @@ export class App extends React.Component {
     this.assistant.on("tts", (event) => {
       //console.log(`assistant.on(tts)`, event);
     });
+
+    window.addEventListener('keydown', (event) => {
+      switch(event.code) {
+        case 'ArrowDown':
+          // вниз
+          break;
+         case 'ArrowUp':
+          // вверх
+          break;
+         case 'ArrowLeft':
+          // влево
+          break;
+         case 'ArrowRight':
+          // вправо
+          break;
+         case 'Enter':
+          // ок
+         break;
+      }
+    });
   }
+
+  
 
   getStateForAssistant() {
     console.log('getStateForAssistant: this.state:', this.state)
@@ -121,12 +142,43 @@ export class App extends React.Component {
     //this.setState({joke_name: newName});
   }
 
-  addFavorite = () => {
-    const { joke_name } = this.state;
-    if (joke_name.trim() !== '') {
-      this.setState((prevState) => ({
-        favorites: [...prevState.favorites, { id: Date.now(), name: joke_name }],
-      }));
+  getOrCreateUser = async () => {
+    const { user_id } = this.state;
+    const url = `http://localhost:8000/user/get_or_create_user?user_id=${user_id}`;
+    try{
+      const response = await axios.post(url);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  addFavJoke = async () => {
+    const {user_id, text } = this.state;
+    const url = `http://localhost:8000/user/add_fav_joke?content=${encodeURIComponent(text)}&user_id=${user_id}`;
+    try{
+      const response = await axios.post(url);
+      console.log(response.data.joke_id);
+      console.log(response.data.alias);
+      const {joke_id, alias} = response.data;
+      this.setState({joke_id, alias});
+      console.log(this.state);
+      console.log(response);
+    } catch (error){
+      console.log(error);
+    }
+  }
+
+  addFavorite = async () => {
+    await this.addFavJoke();
+    const { alias } = this.state;
+    console.log(this.state);
+    if (alias.trim() !== '') {
+      this.setState((state) => ({
+        favorites: [...state.favorites, { id: Date.now(), name: alias }],
+      }), () => {
+        console.log(this.state);
+      });
     }
   };
 
@@ -141,7 +193,6 @@ export class App extends React.Component {
       showFavorites: !prevState.showFavorites,
     }));
   };
-
 
   render(){
     return (
