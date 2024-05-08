@@ -29,7 +29,7 @@ export class App extends React.Component {
     this.state = {
       text: '',
       favorites: [],
-      user_id: '',
+      user_id: '123',
       joke_id: '',
       alias: '',
       showFavorites: false,
@@ -154,33 +154,38 @@ export class App extends React.Component {
   }
 
   addFavJoke = async () => {
-    const {user_id, text } = this.state;
+    const { user_id, text } = this.state;
     const url = `http://localhost:8000/user/add_fav_joke?content=${encodeURIComponent(text)}&user_id=${user_id}`;
-    try{
+    try {
       const response = await axios.post(url);
-      console.log(response.data.joke_id);
-      console.log(response.data.alias);
-      const {joke_id, alias} = response.data;
-      this.setState({joke_id, alias});
-      console.log(this.state);
+      const { joke_id, alias } = response.data;
       console.log(response);
-    } catch (error){
-      console.log(error);
-    }
-  }
-
-  addFavorite = async () => {
-    await this.addFavJoke();
-    const { alias } = this.state;
-    console.log(this.state);
-    if (alias.trim() !== '') {
-      this.setState((state) => ({
-        favorites: [...state.favorites, { id: Date.now(), name: alias }],
-      }), () => {
+      this.setState({ joke_id, alias, text }, () => {
         console.log(this.state);
       });
+      return { joke_id, alias, text };
+    } catch (error) {
+      console.log(error);
+      return null;
     }
   };
+
+  addFavorite = async () => {
+    const { joke_id, alias, text } = await this.addFavJoke();
+    if (alias.trim() !== '' && joke_id !== null) {
+      const joke_exists = this.state.favorites.some(fav => fav.id === joke_id);
+      if (!joke_exists) {
+        this.setState((state) => ({
+          favorites: [...state.favorites, { id: joke_id, name: alias, text: text}],
+        }), () => {
+          console.log(this.state);
+        });
+      } else {
+        console.log("Joke already exists in favorites");
+      }
+    }
+  };
+
 
   removeFavorite = (id) => {
     this.setState((prevState) => ({
@@ -192,6 +197,10 @@ export class App extends React.Component {
     this.setState((prevState) => ({
       showFavorites: !prevState.showFavorites,
     }));
+  };
+
+  handleFavoriteClick = (joke_id) => {
+
   };
 
   render(){
@@ -210,16 +219,16 @@ export class App extends React.Component {
                 <h3>Список избранного:</h3>
                 <ul>
                   {this.state.favorites.map((favorite) => (
-                    <li key={favorite.id}>
-                      {favorite.name}{' '}
-                      <IconButton aria-label="delete" onClick={() => this.removeFavorite(favorite.id)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </li>
-                ))}
+                      <li key={favorite.id} onClick={() => this.handleFavoriteClick(favorite.id)}>
+                        {favorite.name}{' '}
+                        <IconButton aria-label="delete" onClick={() => this.removeFavorite(favorite.id)}>
+                          <DeleteIcon/>
+                        </IconButton>
+                      </li>
+                  ))}
                 </ul>
                 <IconButton aria-label="add" onClick={this.addFavorite}>
-                  <AddIcon />
+                  <AddIcon/>
                 </IconButton>
               </div>
             </div>
@@ -227,14 +236,15 @@ export class App extends React.Component {
         </div>
         <div className="App">
           <div className="App-logo">
-              <img src={logo} alt="" className="App-logo-pic" />
+            <img src={logo} alt="" className="App-logo-pic"/>
           </div>
           <main className="App-main">
             <textarea
-              value={this.state.text}
-              onChange={() => {}}
-              className="App-textarea"
-              rows={15}
+                value={this.state.text}
+                onChange={() => {
+                }}
+                className="App-textarea"
+                rows={15}
               readOnly
             />
           </main>
