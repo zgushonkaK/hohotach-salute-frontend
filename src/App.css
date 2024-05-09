@@ -73,7 +73,7 @@ body {
 
 .App-footer {
   padding: 30px;
-  margin-bottom: 50px;
+  margin-bottom: 5em;
 }
 
 .App-gen-button {
@@ -121,7 +121,7 @@ body {
 
 .App-favorites-container {
   background-color: #fff;
-  font-size: calc(14px + .5vw);
+  font-size: calc(10px + .5vw);
   padding: 20px;
   max-width: 500px;
   max-height: 350px;

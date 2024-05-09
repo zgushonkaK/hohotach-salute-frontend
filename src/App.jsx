@@ -161,6 +161,9 @@ export class App extends React.Component {
 
   addFavJoke = async () => {
     const { user_id, text } = this.state;
+    if (text === "") {
+      return {joke_id: "", alias: "", text: ""};
+    }
     const url = `/add_fav_joke?content=${encodeURIComponent(text)}&user_id=${user_id}`;
     try {
       const response = await api.post(url);
@@ -178,7 +181,7 @@ export class App extends React.Component {
 
   addFavorite = async () => {
     const { joke_id, alias, text } = await this.addFavJoke();
-    if (alias.trim() !== '...') {
+    if (alias.trim() !== '' && joke_id !== '') {
       const joke_exists = this.state.favorites.some(fav => fav.id === joke_id);
       if (!joke_exists) {
         this.setState((state) => ({
@@ -203,7 +206,10 @@ export class App extends React.Component {
     await api.delete(`/delete_fav_joke?joke_id=${id}`);
   };
 
-  toggleFavorites = () => {
+  toggleFavorites = async () => {
+    if (!this.state.showFavorites) {
+      await this.openFavorites();
+    }
     this.setState((prevState) => ({
       showFavorites: !prevState.showFavorites,
     }));
@@ -227,7 +233,7 @@ export class App extends React.Component {
                   &times;
                 </button>
                 <h3>Список избранного:</h3>
-                <ul>
+                <div>
                   {this.state.favorites.map((favorite) => (
                       <li key={favorite.id} onClick={() => this.handleFavoriteClick(favorite.id)}>
                         {favorite.name}{' '}
@@ -236,7 +242,7 @@ export class App extends React.Component {
                         </IconButton>
                       </li>
                   ))}
-                </ul>
+                </div>
               </div>
             </div>
           )}
