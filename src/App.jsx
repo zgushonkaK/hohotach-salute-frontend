@@ -6,7 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 
 import './App.css';
-import jsonData from './test-data.json';
+import api from './api.js'
 import logo from './images/HOHOTACHv2.png'
 
 const initializeAssistant = (getState/*: any*/) => {
@@ -29,10 +29,12 @@ export class App extends React.Component {
     this.state = {
       text: '',
       favorites: [],
-      user_id: '123',
+      user_id: '',
       joke_id: '',
       alias: '',
       showFavorites: false,
+      showOverlay: false,
+      fav_joke_text: '',
     }
 
     this.assistant = initializeAssistant(() => this.getStateForAssistant());
@@ -41,7 +43,7 @@ export class App extends React.Component {
       //console.log(`assistant.on(data)`, event);
       const { action } = event;
       //console.log('action cur = ', action);
-      this.dispatchAssistantAction(action); 
+      this.dispatchAssistantAction(action);
     });
 
     this.assistant.on("start", (event) => {
@@ -98,7 +100,9 @@ export class App extends React.Component {
           this.fillTextField();
           break;
         case 'initialize_user':
-          this.setState({user_id: action.id});
+          this.setState({
+            user_id: action.id,
+          });
           console.log('user_is', action.id);
           break;
         case 'open_favorites':
@@ -116,24 +120,10 @@ export class App extends React.Component {
     }
   }
 
-  /*
-  getJokeFromJson = () => {
-    const response = axios.get('http://localhost:8000/user/get_joke_from_api');
-    return response.content;
-  }
-  */
-  getJokeNameFromJson = () =>{
-    const name = jsonData.Name;
-    return name;
-  }
-
   fillTextField = async () => {
-    //Мы тут типо как-то получаем анекдот и преобразовываем его в строку newText
-    //let newText = this.getJokeFromJson();
-    //let newName = this.getJokeNameFromJson();
-    console.log('zhopa');
+    console.log('fill');
     try{
-      const response = await axios.get('http://localhost:8000/user/get_joke_from_api');
+      const response = await api.get('/get_joke_from_api');
       this.setState({text: response.data.content});
       console.log(response);
     } catch (error) {
@@ -144,20 +134,36 @@ export class App extends React.Component {
 
   getOrCreateUser = async () => {
     const { user_id } = this.state;
-    const url = `http://localhost:8000/user/get_or_create_user?user_id=${user_id}`;
+    const url = `/get_or_create_user?user_id=${user_id}`;
     try{
-      const response = await axios.post(url);
+      const response = await api.post(url);
       console.log(response);
     } catch (error) {
       console.error(error);
     }
   }
 
+  openFavorites = async() => {
+    const { user_id } = this.state;
+    const url = `/get_fav_jokes?user_id=${user_id}`;
+    try{
+      const response = await api.get(url);
+      this.state.favorites = response.data.map(response => ({
+        id: response.joke_id,
+        name: response.alias,
+        text: response.content
+      }));
+      console.log(response)
+    } catch (error) {
+      console.error(error);
+    }
+}
+
   addFavJoke = async () => {
     const { user_id, text } = this.state;
-    const url = `http://localhost:8000/user/add_fav_joke?content=${encodeURIComponent(text)}&user_id=${user_id}`;
+    const url = `/add_fav_joke?content=${encodeURIComponent(text)}&user_id=${user_id}`;
     try {
-      const response = await axios.post(url);
+      const response = await api.post(url);
       const { joke_id, alias } = response.data;
       console.log(response);
       this.setState({ joke_id, alias, text }, () => {
@@ -172,7 +178,7 @@ export class App extends React.Component {
 
   addFavorite = async () => {
     const { joke_id, alias, text } = await this.addFavJoke();
-    if (alias.trim() !== '' && joke_id !== null) {
+    if (alias.trim() !== '...') {
       const joke_exists = this.state.favorites.some(fav => fav.id === joke_id);
       if (!joke_exists) {
         this.setState((state) => ({
@@ -184,13 +190,17 @@ export class App extends React.Component {
         console.log("Joke already exists in favorites");
       }
     }
+    else {
+      console.log("Nothing to add.")
+    }
   };
 
 
-  removeFavorite = (id) => {
+  removeFavorite = async (id) => {
     this.setState((prevState) => ({
       favorites: prevState.favorites.filter((favorite) => favorite.id !== id),
     }));
+    await api.delete(`/delete_fav_joke?joke_id=${id}`);
   };
 
   toggleFavorites = () => {
@@ -227,9 +237,6 @@ export class App extends React.Component {
                       </li>
                   ))}
                 </ul>
-                <IconButton aria-label="add" onClick={this.addFavorite}>
-                  <AddIcon/>
-                </IconButton>
               </div>
             </div>
           )}
@@ -244,17 +251,21 @@ export class App extends React.Component {
                 onChange={() => {
                 }}
                 className="App-textarea"
-                rows={15}
-              readOnly
+                rows={12}
+                cols={45}
+                readOnly
             />
           </main>
           <footer className="App-footer">
-            <button onClick={this.fillTextField.bind(this)} className="App-button">
+            <button onClick={this.fillTextField.bind(this)} className="App-gen-button">
               Сгенерируй анекдот
+            </button>
+            <button onClick={this.addFavorite} className="App-add-button">
+              Добавь в избранное
             </button>
           </footer>
         </div>
       </body>
     )
-}
+  }
 }
