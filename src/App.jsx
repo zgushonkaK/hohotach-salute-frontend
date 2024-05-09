@@ -1,9 +1,7 @@
 import React from "react";
 import {createAssistant, createSmartappDebugger,} from "@salutejs/client";
-import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
 
 import './App.css';
 import api from './api.js'
@@ -219,6 +217,13 @@ export class App extends React.Component {
 
   };
 
+  calculateRows = () => {
+    const { text } = this.state;
+    const line_width = 50;
+    const newlines = text.split('\n').length - 1;
+    return Math.ceil(text.length / line_width) + newlines;
+  };
+
   render(){
     return (
       <body>
@@ -257,8 +262,8 @@ export class App extends React.Component {
                 onChange={() => {
                 }}
                 className="App-textarea"
-                rows={12}
-                cols={45}
+                rows={this.calculateRows()}
+                cols={50}
                 readOnly
             />
           </main>
