@@ -20,6 +20,7 @@ body {
 .App-logo {
   max-width: 100%;
   width: calc(150px + 7vw);
+  min-height: 200px;
 }
 
 .App-logo-pic {
@@ -29,7 +30,7 @@ body {
 
 .App-main {
   flex-grow: 1;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
@@ -42,44 +43,48 @@ body {
   margin-top: 10px;
 }
 
-.App-fav-container {
-  list-style-type: none;
+.App-textarea {
   font-size: calc(14px + .5vw);
-  padding: 10px;
-  background: linear-gradient(#d8d8d8, #d8d8d8) padding-box,
-  linear-gradient(to right, #e0a7bd, #df8951) border-box;
+  padding: 20px;
+  background: linear-gradient(#e8e8e8, #e8e8e8) padding-box,
+  linear-gradient(to left,  #adde3c, #10adc6) border-box;
   border: 4px solid transparent;
   border-radius: 15px;
+  height: auto;
   resize: none;
-  width: 100%;
-  margin-left: 20px;
-  overflow-y: auto;
+  overflow: hidden;
+  margin-top: -50px;
+}
+
+.App-fav-button {
+  font-size: calc(14px + .5vw);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #ffc107;
+  transition: color 0.3s ease;
+}
+
+.App-fav-button:hover {
+  color: #ffa000;
 }
 
 .App-favorite-joke {
   font-size: calc(14px + .5vw);
 }
 
-.App-textarea {
-  font-size: calc(14px + .5vw);
-  padding: 20px;
-  background: linear-gradient(#d8d8d8, #d8d8d8) padding-box,
-  linear-gradient(to left,  #adde3c, #10adc6) border-box;
-  border: 4px solid transparent;
-  border-radius: 15px;
-  resize: none;
-  width: 100%;
-  height: auto;
-  margin-top: -50px;
-}
-
 .App-footer {
   padding: 30px;
   margin-bottom: 5em;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .App-gen-button {
   font-size: calc(14px + .5vw);
+  flex-shrink: 0;
   padding: 10px 30px;
   background-color: #43ae32;
   color: #fff;
@@ -91,6 +96,7 @@ body {
 
 .App-add-button {
   font-size: calc(14px + .5vw);
+  flex-shrink: 0;
   padding: 10px 30px;
   background-color: #2fae9f;
   color: #fff;
@@ -122,24 +128,48 @@ body {
 }
 
 .App-favorites-container {
-  background-color: #fff;
-  font-size: calc(10px + .5vw);
+  font-size: calc(13px + .5vw);
+  background: linear-gradient(#e8e8e8, #e8e8e8) padding-box,
+  linear-gradient(to right, #e0a7bd, #df8951) border-box;
+  border: 4px solid transparent;
+  border-radius: 5px;
+  min-width: 290px;
   padding: 20px;
-  max-width: 500px;
-  max-height: 350px;
+  max-height: 70%;
   overflow-y: auto;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
   position: relative;
+}
+
+.App-favorites-container h3 {
+  margin-top: -3px;
+  text-align: center;
+  font-size: calc(15px + .5vw);
+}
+
+.App-favorites-container ul {
+  list-style-type: decimal;
+  list-style-position: outside;
+  text-align: end;
+  max-height: 65%;
+  font-size: calc(14px + .5vw);
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  margin-bottom: 0;
+  margin-left: 1.2vw;
+}
+
+.App-list-item {
+  font-size: calc(14px + .5vw);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .App-close-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 5px;
+  right: 5px;
   background-color: transparent;
   border: none;
-  font-size: 18px;
   font-weight: bold;
   cursor: pointer;
 }

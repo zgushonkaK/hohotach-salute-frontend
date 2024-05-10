@@ -1,7 +1,9 @@
 import React from "react";
 import {createAssistant, createSmartappDebugger,} from "@salutejs/client";
 import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
+import StarRounded from '@material-ui/icons/StarRounded';
 
 import './App.css';
 import api from './api.js'
@@ -196,7 +198,6 @@ export class App extends React.Component {
     }
   };
 
-
   removeFavorite = async (id) => {
     this.setState((prevState) => ({
       favorites: prevState.favorites.filter((favorite) => favorite.id !== id),
@@ -213,14 +214,14 @@ export class App extends React.Component {
     }));
   };
 
-  handleFavoriteClick = (joke_id) => {
-
+  handleFavoriteClick = (text) => {
+    this.setState({text: text});
   };
 
   calculateRows = () => {
     const { text } = this.state;
-    const line_width = 50;
-    const newlines = text.split('\n').length - 1;
+    const line_width = 47;
+    const newlines = text.split('\r\n').length - 1;
     return Math.ceil(text.length / line_width) + newlines;
   };
 
@@ -229,25 +230,39 @@ export class App extends React.Component {
       <body>
         <div>
           <button className="App-favorite-button" onClick={this.toggleFavorites}>
-            Избранное*
+            <StarRounded style={{
+              fontSize: 'calc(30px + .65vw)'
+            }}/>
           </button>
           {this.state.showFavorites && (
             <div className="App-overlay">
               <div className="App-favorites-container">
-                <button className="App-close-button" onClick={this.toggleFavorites}>
-                  &times;
-                </button>
-                <h3>Список избранного:</h3>
-                <div>
+                <h3>Избранное:</h3>
+                <IconButton aria-label="close" onClick={this.toggleFavorites} style={{
+                      fontSize: 'calc(13px + .65vw)',
+                      position: 'absolute',
+                      top: '5px',
+                      right: '5px'
+                }}><CloseIcon />
+                </IconButton>
+                <ul>
                   {this.state.favorites.map((favorite) => (
-                      <li key={favorite.id} onClick={() => this.handleFavoriteClick(favorite.id)}>
-                        {favorite.name}{' '}
-                        <IconButton aria-label="delete" onClick={() => this.removeFavorite(favorite.id)}>
-                          <DeleteIcon/>
-                        </IconButton>
+                      <li>
+                        <div key={favorite.id} className='App-list-item' onClick={() => {
+                          this.handleFavoriteClick(favorite.text);
+                          this.toggleFavorites();
+                        }}>
+                          {favorite.name}{' '}
+                          <IconButton aria-label="delete" onClick={(e) => {
+                            e.stopPropagation(); // Stop event propagation
+                            this.removeFavorite(favorite.id);
+                          }}>
+                            <DeleteIcon style={{ fontSize: 'calc(13px + .65vw)' }} />
+                          </IconButton>
+                        </div>
                       </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </div>
           )}
@@ -261,10 +276,10 @@ export class App extends React.Component {
                 value={this.state.text}
                 onChange={() => {
                 }}
-                className="App-textarea"
                 rows={this.calculateRows()}
-                cols={50}
+                cols={45}
                 readOnly
+                className="App-textarea"
             />
           </main>
           <footer className="App-footer">
@@ -277,6 +292,6 @@ export class App extends React.Component {
           </footer>
         </div>
       </body>
-    )
+  )
   }
-}
+  }
