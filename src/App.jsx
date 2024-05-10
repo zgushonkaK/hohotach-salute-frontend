@@ -40,7 +40,7 @@ export class App extends React.Component {
     this.assistant = initializeAssistant(() => this.getStateForAssistant());
 
     this.assistant.on("data", (event/*: any*/) => {
-      //console.log(`assistant.on(data)`, event);
+      console.log(`assistant.on(data)`, event);
       const { action } = event;
       //console.log('action cur = ', action);
       this.dispatchAssistantAction(action);
@@ -83,9 +83,9 @@ export class App extends React.Component {
     console.log('getStateForAssistant: this.state:', this.state)
     const state = {
       joke: {
-        text: this.text,
-        favorites: this.favorites,
-        joke_id: this.joke_id,
+        text: this.state.text,
+        favorites: this.state.favorites,
+        joke_id: this.state.joke_id,
       },
     };
     console.log('getStateForAssistant: state:', state)
@@ -93,7 +93,7 @@ export class App extends React.Component {
   }
 
   dispatchAssistantAction(action){
-    //console.log('dispatchAssistantAction', action);
+    console.log('dispatchAssistantAction', action);
     if (action){
       switch (action.type) {
         case 'generate_joke':
@@ -111,7 +111,7 @@ export class App extends React.Component {
         case 'close_favorites':
           this.toggleFavorites();
           break;
-        case 'add_favorites':
+        case 'add_favorite':
           this.addFavorite();
           break;
         default:

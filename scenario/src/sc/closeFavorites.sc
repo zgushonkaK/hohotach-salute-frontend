@@ -5,4 +5,4 @@ theme: /
         a: выполняю
         
         script:
-            сloseFavorites($context);
+            closeFavorites($context);
