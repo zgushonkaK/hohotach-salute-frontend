@@ -4,6 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import StarRounded from '@material-ui/icons/StarRounded';
+import { Info } from '@material-ui/icons';
 
 import './App.css';
 import api from './api.js'
@@ -33,7 +34,7 @@ export class App extends React.Component {
       joke_id: '',
       alias: '',
       showFavorites: false,
-      showOverlay: false,
+      showPopup: false,
       fav_joke_text: '',
     }
 
@@ -212,6 +213,10 @@ export class App extends React.Component {
     this.setState((prevState) => ({
       showFavorites: !prevState.showFavorites,
     }));
+  };
+
+  handleTogglePopup = () => {
+    this.setState({ showPopup: !this.state.showPopup });
   };
 
   handleFavoriteClick = (text) => {
