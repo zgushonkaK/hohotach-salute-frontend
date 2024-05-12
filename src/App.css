@@ -7,7 +7,6 @@ body {
   margin: 0; /* Remove default margins */
   padding: 0; /* Remove default paddings */
   box-sizing: border-box; /* Include paddings and borders in the element's total width and height */
-  background-color: #292929;
 }
 
 .App {
@@ -19,99 +18,39 @@ body {
 
 .App-logo {
   max-width: 100%;
-  width: calc(150px + 7vw);
-  min-height: 200px;
+  width: 10rem;
 }
 
 .App-logo-pic {
   max-width: 100%;
-  width: calc(150px + 7vw);
+  margin-bottom: -1rem;
 }
 
 .App-main {
   flex-grow: 1;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
   margin: 0 auto;
-}
-
-.App-toggle-fav {
-  cursor: pointer;
-  background-color: lightblue;
-  padding: 5px;
-  margin-top: 10px;
-}
-
-.App-textarea {
-  font-size: calc(14px + .5vw);
-  padding: 20px;
-  background: linear-gradient(#e8e8e8, #e8e8e8) padding-box,
-  linear-gradient(to left,  #adde3c, #10adc6) border-box;
-  border: 4px solid transparent;
-  border-radius: 15px;
-  height: auto;
-  resize: none;
-  overflow: hidden;
-  margin-top: -50px;
-}
-
-.App-fav-button {
-  font-size: calc(14px + .5vw);
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  color: #ffc107;
-  transition: color 0.3s ease;
-}
-
-.App-fav-button:hover {
-  color: #ffa000;
-}
-
-.App-favorite-joke {
-  font-size: calc(14px + .5vw);
+  white-space: pre-wrap;
 }
 
 .App-footer {
-  padding: 30px;
-  margin-bottom: 5em;
+  padding: 20px;
   flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-.App-gen-button {
-  font-size: calc(14px + .5vw);
-  flex-shrink: 0;
-  padding: 10px 30px;
-  background-color: #43ae32;
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  margin-right: 0.5rem;
-}
-
-.App-add-button {
-  font-size: calc(14px + .5vw);
-  flex-shrink: 0;
-  padding: 10px 30px;
-  background-color: #2fae9f;
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  margin-left: 0.5rem;
+:root {
+  --hover-color: initial;
 }
 
 .App-gen-button:hover {
-  background-color: #0e7c1d;
+  background-color: var(--hover-color) !important;
 }
 
 .App-add-button:hover {
-  background-color: #207e73;
+  background-color: var(--hover-color) !important;
+}
+
+.App-fav-button:hover {
+  background-color: #C7234C
 }
 
 .App-overlay {
@@ -128,64 +67,24 @@ body {
 }
 
 .App-favorites-container {
-  font-size: calc(13px + .5vw);
-  background: linear-gradient(#e8e8e8, #e8e8e8) padding-box,
-  linear-gradient(to right, #e0a7bd, #df8951) border-box;
-  border: 4px solid transparent;
-  border-radius: 5px;
-  min-width: 290px;
+  border-radius: 15px;
   padding: 20px;
   max-height: 70%;
   overflow-y: auto;
-  position: relative;
-}
-
-.App-favorites-container h3 {
-  margin-top: -3px;
-  text-align: center;
-  font-size: calc(15px + .5vw);
 }
 
 .App-favorites-container ul {
-  list-style-type: decimal;
+  list-style-type: disc;
   list-style-position: outside;
   text-align: end;
   max-height: 65%;
-  font-size: calc(14px + .5vw);
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  border-radius: 15px;
   margin-bottom: 0;
-  margin-left: 1.2vw;
+  margin-top: .5rem;
 }
 
 .App-list-item {
-  font-size: calc(14px + .5vw);
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.App-close-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: transparent;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.App-favorite-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  color: #ffc107;
-  transition: color 0.3s ease;
-}
-
-.App-favorite-button:hover {
-  color: #ffa000;
 }

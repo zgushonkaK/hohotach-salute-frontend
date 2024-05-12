@@ -5,12 +5,20 @@ import { App } from './App.jsx';
 import reportWebVitals from './reportWebVitals';
 import './App.css';
 
+import { DeviceThemeProvider, SSRProvider } from '@salutejs/plasma-ui';
+import { detectDevice } from '@salutejs/plasma-ui/utils';
+
 const rootElement = document.getElementById('root');
 
+const detectDeviceCallback = () => detectDevice();
+
 ReactDOM.createRoot(rootElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    // Пока что тип устройства - sberBox
+    <DeviceThemeProvider detectDeviceCallback={(()=>"sberBox")}>
+        <SSRProvider>
+            <App />
+        </SSRProvider>
+    </DeviceThemeProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function
