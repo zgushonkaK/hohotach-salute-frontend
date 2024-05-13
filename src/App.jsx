@@ -85,19 +85,19 @@ export class App extends React.Component {
     window.addEventListener('keydown', (event) => {
       switch(event.code) {
         case 'ArrowDown':
-          // вниз
+          this.toggleFavorites();
           break;
         case 'ArrowUp':
-          // вверх
+          this.toggleFavorites();
           break;
         case 'ArrowLeft':
-          // влево
+          this.toggleFavorites();
           break;
         case 'ArrowRight':
-          // вправо
+          this.toggleFavorites();
           break;
         case 'Enter':
-          // ок
+          this.fillTextField();
           break;
       }
     });
