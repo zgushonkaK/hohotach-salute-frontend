@@ -3,13 +3,14 @@ body {
   flex-direction: column;
   align-items: center; /* Align items horizontally center */
   justify-content: center; /* Align items vertically center */
-  min-height: 90vh; /* Set minimum height to the viewport height */
+  min-height: 100vh; /* Set minimum height to the viewport height */
   margin: 0; /* Remove default margins */
   padding: 0; /* Remove default paddings */
   box-sizing: border-box; /* Include paddings and borders in the element's total width and height */
 }
 
 .App {
+  margin-top: .5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,23 +19,32 @@ body {
 
 .App-logo {
   max-width: 100%;
-  width: 10rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.App-header {
+  display: flex;
+  margin-top: 1rem;
+  flex-direction: column;
 }
 
 .App-logo-pic {
   max-width: 100%;
+  width: 10rem;
   margin-bottom: -1rem;
 }
 
 .App-main {
-  flex-grow: 1;
   margin: 0 auto;
   white-space: pre-wrap;
+  text-align: left;
 }
 
 .App-footer {
   padding: 20px;
   flex-grow: 1;
+  margin-bottom: 3rem;
 }
 
 :root {
@@ -51,6 +61,10 @@ body {
 
 .App-fav-button:hover {
   background-color: #C7234C
+}
+
+.App-info-button:hover {
+  background-color: #129DFA
 }
 
 .App-overlay {

@@ -14,7 +14,7 @@ const detectDeviceCallback = () => detectDevice();
 
 ReactDOM.createRoot(rootElement).render(
     // Пока что тип устройства - sberBox
-    <DeviceThemeProvider detectDeviceCallback={(()=>"sberBox")}>
+    <DeviceThemeProvider detectDeviceCallback={() => "sberBox"}>
         <SSRProvider>
             <App />
         </SSRProvider>

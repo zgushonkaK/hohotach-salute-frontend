@@ -1,19 +1,22 @@
 import React from "react";
 import {createAssistant, createSmartappDebugger} from "@salutejs/client";
 
-/*import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import DeleteIcon from '@material-ui/icons/Delete';
-import StarRounded from '@material-ui/icons/StarRounded';
-import { Info } from '@material-ui/icons';*/
-
 import {createGlobalStyle} from 'styled-components';
 import {accent, overlay, background, gradient, text} from '@salutejs/plasma-tokens';
 import {salutejs_eva__dark, salutejs_joy__dark, salutejs_sber__dark} from '@salutejs/plasma-tokens/themes';
-
-import {ActionButton, Button, Card, CardContent, Cell, Col, Row, TextArea, TextBox} from '@salutejs/plasma-ui';
-import {Container} from '@salutejs/plasma-ui/components/Grid';
-import {IconCross, IconHeart, IconTrashFilled} from '@salutejs/plasma-icons';
+import {
+  ActionButton,
+  BodyL,
+  Button,
+  Card,
+  CardContent,
+  Cell,
+  Col,
+  Row,
+  Sheet,
+  TextBox
+} from '@salutejs/plasma-ui';
+import {IconCross, IconHeart, IconInfo, IconTrashFilled} from '@salutejs/plasma-icons';
 
 import './App.css';
 import api from './api.js'
@@ -31,7 +34,6 @@ const DocStyles = createGlobalStyle`
     min-height: 100vh;
   }
 `;
-
 
 const initializeAssistant = (getState/*: any*/) => {
   if (process.env.NODE_ENV === "development") {
@@ -60,6 +62,7 @@ export class App extends React.Component {
       alias: '',
       showFavorites: false,
       showPopup: false,
+      showInfo: false,
       fav_joke_text: '',
     }
 
@@ -102,7 +105,6 @@ export class App extends React.Component {
       }
     });
   }
-
 
   getStateForAssistant() {
     console.log('getStateForAssistant: this.state:', this.state)
@@ -151,18 +153,6 @@ export class App extends React.Component {
     try{
       const response = await api.get('/get_joke_from_api');
       this.setState({text: response.data.content, caption: ''});
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-    //this.setState({joke_name: newName});
-  }
-
-  getOrCreateUser = async () => {
-    const { user_id } = this.state;
-    const url = `/get_or_create_user?user_id=${user_id}`;
-    try{
-      const response = await api.post(url);
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -231,12 +221,19 @@ export class App extends React.Component {
     await api.delete(`/delete_fav_joke?joke_id=${id}`);
   };
 
+
   toggleFavorites = async () => {
     if (!this.state.showFavorites) {
       await this.openFavorites();
     }
     this.setState((prevState) => ({
       showFavorites: !prevState.showFavorites,
+    }));
+  };
+
+  toggleInfo = () => {
+    this.setState((prevState) => ({
+      showInfo: !prevState.showInfo,
     }));
   };
 
@@ -260,112 +257,139 @@ export class App extends React.Component {
   render(){
     return (
         <body>
-          <div>
-            <DocStyles />
-            {(() => {
-              switch (this.state.characterID) {
-                case 'Сбер':
-                  return <ThemeBackgroundSber />;
-                case 'Афина':
-                  return <ThemeBackgroundEva />;
-                case 'Джой':
-                  return <ThemeBackgroundJoy />;
-                default:
-                  return;
-              }
-            })()}
-            {this.state.showFavorites && (
-                <div className="App-overlay">
-                  <div className="App-favorites-container" style={{background: overlay}} >
-                    <ActionButton
-                        size="m"
-                        pin="circle-circle"
-                        view="overlay"
-                        onClick={this.toggleFavorites}>
-                        <IconCross/>
-                    </ActionButton>
-                    <ul style={{ background: gradient}}>
-                      {this.state.favorites.map((favorite) => (
-                          <li>
-                            <div key={favorite.id} className="App-list-item">
-                              <Button view="clear"
-                                      size="s"
-                                      text={favorite.name}
-                                      onClick={() => {
-                                        this.handleFavoriteClick(favorite.text);
-                                        this.toggleFavorites();
+        <div>
+          <DocStyles/>
+          {(() => {
+            switch (this.state.characterID) {
+              case 'Сбер':
+                return <ThemeBackgroundSber/>;
+              case 'Афина':
+                return <ThemeBackgroundEva/>;
+              case 'Джой':
+                return <ThemeBackgroundJoy/>;
+              default:
+                return;
+            }
+          })()}
+          {this.state.showFavorites && (
+              <div className="App-overlay">
+                <div className="App-favorites-container" style={{background: overlay}}>
+                  <ActionButton
+                      size="m"
+                      pin="circle-circle"
+                      view="overlay"
+                      onClick={this.toggleFavorites}>
+                    <IconCross/>
+                  </ActionButton>
+
+                  <ul style={{background: gradient}}>
+                    {this.state.favorites.map((favorite) => (
+                        <li>
+                          <div key={favorite.id} className="App-list-item">
+                            <Button view="clear"
+                                    size="s"
+                                    text={favorite.name}
+                                    onClick={() => {
+                                      this.handleFavoriteClick(favorite.text);
+                                      this.toggleFavorites();
                                     }}>
-                              </Button>
-                              <ActionButton pin="circle-circle"
-                                            view="clear"
-                                            size="m"
-                                            m="3"
-                                            onClick={(e) => {
-                                              e.stopPropagation(); // Stop event propagation
-                                              this.removeFavorite(favorite.id);
-                                            }}>
-                                <IconTrashFilled size="xs"/>
-                              </ActionButton>
-                            </div>
-                          </li>
-                      ))}
-                    </ul>
-                  </div>
+                            </Button>
+
+                            <ActionButton pin="circle-circle"
+                                          view="clear"
+                                          size="m"
+                                          m="3"
+                                          onClick={(e) => {
+                                            e.stopPropagation(); // Stop event propagation
+                                            this.removeFavorite(favorite.id);
+                                          }}>
+                              <IconTrashFilled size="xs"/>
+                            </ActionButton>
+                          </div>
+                        </li>
+                    ))}
+                  </ul>
                 </div>
-            )}
-            <div className="App">
-              <div className="App-logo">
-                <img src={logo} alt="" className="App-logo-pic"/>
               </div>
+          )}
+          <div className="App">
+            <Row>
+              <Col>
+                <Button
+                    size="s"
+                    pin="circle-circle"
+                    view="clear"
+                    onClick={() => this.toggleInfo()}
+                    className="App-info-button"
+                    contentLeft={<IconInfo/>}>
+                </Button>
+
+                <Sheet isOpen={this.state.showInfo} onClose={() => this.toggleInfo()}>
+                  <BodyL mx={32}>
+                    Для генерации анекдотов используется сторонний ресурс RzhuNeMogu.ru
+                  </BodyL>
+                </Sheet>
+              </Col>
+
+              <Col>
+                <div className="App-logo">
+                  <img src={logo} alt="" className="App-logo-pic"/>
+                </div>
+              </Col>
+
+              <Col>
+                <Button
+                    size="s"
+                    pin="circle-circle"
+                    view="clear"
+                    onClick={this.toggleFavorites}
+                    className="App-fav-button"
+                    contentLeft={<IconHeart/>}>
+                </Button>
+              </Col>
+            </Row>
+
+            <Row>
               <main className="App-main">
-                <Card style={{ minWidth: '10vw', maxWidth: '80vw', minHeight: '5rem'}}>
+                <Card style={{minWidth: '10vw', maxWidth: '70vw', minHeight: '5rem'}}>
                   <CardContent compact>
                     <Cell
                         content={<TextBox title={this.state.text} caption={this.state.caption}/>}
                     />
-                    </CardContent>
-                  </Card>
-                </main>
-                <footer className="App-footer">
-                  <Row>
-                    <Col sizeS={1} sizeM={2} sizeL={3} sizeXL={4}
-                         style={{marginRight: '.5rem'}}>
-                      <Button
-                          size="s"
-                          text="Сгенерируй анекдот"
-                          onClick={this.fillTextField.bind(this)}
-                          className="App-gen-button"
-                          style={{ '--hover-color': accent}}>
-                      </Button>
-                    </Col>
-                    <Col sizeS={1} sizeM={2} sizeL={3} sizeXL={4}
-                         offsetS={1} offsetM={1} offsetL={1} offsetXL={2}
-                         style={{marginRight: '.5rem'}}>
-                      <Button
-                          size="s"
-                          text="Добавь в избранное"
-                          onClick={this.addFavorite}
-                          className="App-add-button"
-                          style={{ '--hover-color': this.getColor()}}>
-                      </Button>
-                    </Col>
-                  </Row>
-                  <Row style={{marginTop: '.5rem'}}>
-                    <Col sizeS={2} sizeM={2} sizeL={2} sizeXL={4}
-                         offsetS={1} offsetM={2} offsetL={3} offsetXL={4}>
-                      <Button
-                          size="s"
-                          pin="circle-circle"
-                          onClick={this.toggleFavorites}
-                          className="App-fav-button"
-                          contentLeft={<IconHeart />}>
-                      </Button>
-                    </Col>
-                  </Row>
-                </footer>
-              </div>
+                  </CardContent>
+                </Card>
+              </main>
+            </Row>
+
+            <footer className="App-footer">
+              <Row>
+                <Col sizeS={1} sizeM={2} sizeL={3} sizeXL={4}
+                     style={{marginRight: '.5rem'}}>
+                  <Button
+                      size='s'
+                      text="Сгенерируй анекдот"
+                      onClick={this.fillTextField.bind(this)}
+                      className="App-gen-button"
+                      style={{'--hover-color': accent}}>
+                  </Button>
+                </Col>
+
+                <Col sizeS={1} sizeM={2} sizeL={3} sizeXL={4}
+                     offsetS={1} offsetM={1} offsetL={1} offsetXL={2}
+                     style={{marginRight: '.5rem'}}>
+                  <Button
+                      size='s'
+                      text="Добавь в избранное"
+                      onClick={this.addFavorite}
+                      className="App-add-button"
+                      style={{'--hover-color': this.getColor()}}>
+                  </Button>
+                </Col>
+              </Row>
+            </footer>
+          </div>
           </div>
         </body>
-      )
-    }
-}
+  )
+  }
+  }
