@@ -6,14 +6,12 @@ import {accent, overlay, background, gradient, text} from '@salutejs/plasma-toke
 import {salutejs_eva__dark, salutejs_joy__dark, salutejs_sber__dark} from '@salutejs/plasma-tokens/themes';
 import {
   ActionButton,
-  BodyL,
   Button,
   Card,
   CardContent,
   Cell,
-  Col,
+  Col, Container,
   Row,
-  Sheet,
   TextBox
 } from '@salutejs/plasma-ui';
 import {IconCross, IconHeart, IconInfo, IconTrashFilled} from '@salutejs/plasma-icons';
@@ -313,39 +311,27 @@ export class App extends React.Component {
               </div>
           )}
           <div className="App">
+            <Container>
+              <Row>
+                <Col sizeS={1} sizeM={2} sizeL={3} sizeXL={4}
+                     offsetS={3} offsetM={6} offsetL={8} offsetXL={12}>
+                  <Button
+                      size="s"
+                      pin="circle-circle"
+                      view="clear"
+                      onClick={this.toggleFavorites}
+                      className="App-fav-button"
+                      contentLeft={<IconHeart/>}>
+                  </Button>
+                </Col>
+              </Row>
+            </Container>
+
             <Row>
-              <Col>
-                <Button
-                    size="s"
-                    pin="circle-circle"
-                    view="clear"
-                    onClick={() => this.toggleInfo()}
-                    className="App-info-button"
-                    contentLeft={<IconInfo/>}>
-                </Button>
-
-                <Sheet isOpen={this.state.showInfo} onClose={() => this.toggleInfo()}>
-                  <BodyL mx={32}>
-                    Для генерации анекдотов используется сторонний ресурс RzhuNeMogu.ru
-                  </BodyL>
-                </Sheet>
-              </Col>
-
               <Col>
                 <div className="App-logo">
                   <img src={logo} alt="" className="App-logo-pic"/>
                 </div>
-              </Col>
-
-              <Col>
-                <Button
-                    size="s"
-                    pin="circle-circle"
-                    view="clear"
-                    onClick={this.toggleFavorites}
-                    className="App-fav-button"
-                    contentLeft={<IconHeart/>}>
-                </Button>
               </Col>
             </Row>
 
@@ -363,8 +349,8 @@ export class App extends React.Component {
 
             <footer className="App-footer">
               <Row>
-                <Col sizeS={1} sizeM={2} sizeL={3} sizeXL={4}
-                     style={{marginRight: '.5rem'}}>
+                <Col sizeS={10} sizeM={2} sizeL={3} sizeXL={4}
+                     style={{marginBottom: '.5rem'}}>
                   <Button
                       size='s'
                       text="Сгенерируй анекдот"
@@ -374,9 +360,8 @@ export class App extends React.Component {
                   </Button>
                 </Col>
 
-                <Col sizeS={1} sizeM={2} sizeL={3} sizeXL={4}
-                     offsetS={1} offsetM={1} offsetL={1} offsetXL={2}
-                     style={{marginRight: '.5rem'}}>
+                <Col sizeS={10} sizeM={1} sizeL={3} sizeXL={4}
+                     offsetS={0} offsetM={1.1} offsetL={1.1} offsetXL={2.1}>
                   <Button
                       size='s'
                       text="Добавь в избранное"
