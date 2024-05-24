@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://46.243.201.172:8000/user/',
+    baseURL: 'https://hohotach.lebkova.ru:443/user/',
 })
 
 export default api;
