@@ -81,9 +81,15 @@ body {
   z-index: 999;
 }
 
+.App-overlay-header {
+  text-align: center;
+  margin-top: -1.8rem;
+  margin-bottom: 1rem;
+}
+
 .App-favorites-container {
   border-radius: 15px;
-  padding: 20px;
+  padding: .75rem;
   max-height: 70%;
   overflow-y: auto;
 }

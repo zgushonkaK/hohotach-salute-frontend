@@ -5,7 +5,7 @@ import {createGlobalStyle} from 'styled-components';
 import {accent, overlay, background, gradient, text} from '@salutejs/plasma-tokens';
 import {salutejs_eva__dark, salutejs_joy__dark, salutejs_sber__dark} from '@salutejs/plasma-tokens/themes';
 import {
-  ActionButton,
+  ActionButton, BodyL, BodyM, BodyS,
   Button,
   Card,
   CardContent,
@@ -272,13 +272,20 @@ export class App extends React.Component {
           {this.state.showFavorites && (
               <div className="App-overlay">
                 <div className="App-favorites-container" style={{background: overlay}}>
-                  <ActionButton
-                      size="m"
-                      pin="circle-circle"
-                      view="overlay"
-                      onClick={this.toggleFavorites}>
-                    <IconCross/>
-                  </ActionButton>
+                      <ActionButton
+                          size="m"
+                          pin="circle-circle"
+                          view="overlay"
+                          onClick={this.toggleFavorites}
+                          style={{paddingLeft: "1.5rem"}}
+                      >
+                        <IconCross/>
+                      </ActionButton>
+
+                    <div className="App-overlay-header">
+                        <BodyL>Избранное</BodyL>
+                    </div>
+
 
                   <ul style={{background: gradient}}>
                     {this.state.favorites.map((favorite) => (
@@ -292,17 +299,6 @@ export class App extends React.Component {
                                       this.toggleFavorites();
                                     }}>
                             </Button>
-
-                            <ActionButton pin="circle-circle"
-                                          view="clear"
-                                          size="m"
-                                          m="3"
-                                          onClick={(e) => {
-                                            e.stopPropagation(); // Stop event propagation
-                                            this.removeFavorite(favorite.id);
-                                          }}>
-                              <IconTrashFilled size="xs"/>
-                            </ActionButton>
                           </div>
                         </li>
                     ))}
