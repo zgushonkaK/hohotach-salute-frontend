@@ -92,6 +92,7 @@ body {
   padding: .75rem;
   max-height: 70%;
   overflow-y: auto;
+  min-width: 11rem;
 }
 
 .App-favorites-container ul {

@@ -5,7 +5,7 @@ import {createGlobalStyle} from 'styled-components';
 import {accent, overlay, background, gradient, text} from '@salutejs/plasma-tokens';
 import {salutejs_eva__dark, salutejs_joy__dark, salutejs_sber__dark} from '@salutejs/plasma-tokens/themes';
 import {
-  ActionButton, BodyL, BodyM, BodyS,
+  ActionButton, BodyL,
   Button,
   Card,
   CardContent,
@@ -14,7 +14,7 @@ import {
   Row,
   TextBox
 } from '@salutejs/plasma-ui';
-import {IconCross, IconHeart, IconInfo, IconTrashFilled} from '@salutejs/plasma-icons';
+import {IconCross, IconHeart, IconTrashFilled} from '@salutejs/plasma-icons';
 
 import './App.css';
 import api from './api.js'
@@ -55,7 +55,7 @@ export class App extends React.Component {
       caption: 'Здесь появится текст анекдота...',
       favorites: [],
       user_id: '',
-      characterID: '',
+      characterID: 'Сбер',
       joke_id: '',
       alias: '',
       showFavorites: false,
