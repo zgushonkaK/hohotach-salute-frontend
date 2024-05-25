@@ -64,6 +64,11 @@ export class App extends React.Component {
       fav_joke_text: '',
     }
 
+    this.favoriteButtons = [];
+    this.favButtonRef = React.createRef();
+    this.genButtonRef = React.createRef();
+    this.addButtonRef = React.createRef();
+
     this.assistant = initializeAssistant(() => this.getStateForAssistant());
 
     this.assistant.on("data", (event/*: any*/) => {
@@ -84,24 +89,82 @@ export class App extends React.Component {
     });
 
     window.addEventListener('keydown', (event) => {
+      const favoriteButtons = this.favoriteButtons.filter((button) => button !== null);
+      const currentIndex = favoriteButtons.findIndex((button) => button === document.activeElement);
+
       switch(event.code) {
         case 'ArrowDown':
-          this.toggleFavorites();
+          if (!this.state.showFavorites) {
+            if (!document.activeElement || !this.isButton(document.activeElement)) {
+              this.genButtonRef.current.focus();
+            } else {
+              this.genButtonRef.current.focus();
+            }
+          } else {
+          event.preventDefault();
+            if (currentIndex === -1) {
+              favoriteButtons[0].focus();
+            } else if (currentIndex < favoriteButtons.length - 1) {
+              favoriteButtons[currentIndex + 1].focus();
+            }
+          }
           break;
         case 'ArrowUp':
-          this.toggleFavorites();
+          if (!this.state.showFavorites) {
+            event.preventDefault();
+            if (!document.activeElement || !this.isButton(document.activeElement)) {
+              this.genButtonRef.current.focus();
+            } else {
+              this.favButtonRef.current.focus();
+            }
+          } else {
+            event.preventDefault();
+            if (currentIndex === -1) {
+              favoriteButtons[0].focus();
+            } else if (currentIndex > 0) {
+              favoriteButtons[currentIndex - 1].focus();
+            }
+          }
           break;
         case 'ArrowLeft':
-          this.toggleFavorites();
+          event.preventDefault();
+          if (!document.activeElement || !this.isButton(document.activeElement)) {
+            this.genButtonRef.current.focus();
+          } else if (document.activeElement === this.addButtonRef.current) {
+            this.genButtonRef.current.focus();
+          }
           break;
         case 'ArrowRight':
-          this.toggleFavorites();
+          event.preventDefault();
+          if (!document.activeElement || !this.isButton(document.activeElement)) {
+            this.genButtonRef.current.focus();
+          } else if (document.activeElement === this.genButtonRef.current) {
+            this.addButtonRef.current.focus();
+          }
           break;
         case 'Enter':
-          this.fillTextField();
+          if (!this.state.showFavorites){
+            event.preventDefault();
+            if (document.activeElement === this.favButtonRef.current) {
+              this.toggleFavorites();
+            } else if (document.activeElement === this.genButtonRef.current) {
+              this.fillTextField();
+            } else if (document.activeElement === this.addButtonRef.current) {
+              this.addFavorite();
+            }
+          } else {
+            event.preventDefault();
+            if (currentIndex !== -1) {
+              favoriteButtons[currentIndex].click();
+            }
+          }
           break;
       }
     });
+  }
+
+  isButton = (element) => {
+    return element.tagName === 'BUTTON';
   }
 
   getStateForAssistant() {
@@ -288,10 +351,11 @@ export class App extends React.Component {
 
 
                   <ul style={{background: gradient}}>
-                    {this.state.favorites.map((favorite) => (
+                    {this.state.favorites.map((favorite, index) => (
                         <li>
                           <div key={favorite.id} className="App-list-item">
-                            <Button view="clear"
+                            <Button ref={(ref) => { this.favoriteButtons[index] = ref; }}
+                                    view="clear"
                                     size="s"
                                     text={favorite.name}
                                     onClick={() => {
@@ -312,6 +376,7 @@ export class App extends React.Component {
                 <Col sizeS={1} sizeM={2} sizeL={3} sizeXL={4}
                      offsetS={3} offsetM={6} offsetL={8} offsetXL={12}>
                   <Button
+                      ref={this.favButtonRef}
                       size="s"
                       pin="circle-circle"
                       view="clear"
@@ -348,6 +413,7 @@ export class App extends React.Component {
                 <Col sizeS={10} sizeM={2} sizeL={3} sizeXL={4}
                      style={{marginBottom: '.5rem'}}>
                   <Button
+                      ref={this.genButtonRef}
                       size='s'
                       text="Сгенерируй анекдот"
                       onClick={this.fillTextField.bind(this)}
@@ -359,6 +425,7 @@ export class App extends React.Component {
                 <Col sizeS={10} sizeM={1} sizeL={3} sizeXL={4}
                      offsetS={0} offsetM={1.1} offsetL={1.1} offsetXL={2.1}>
                   <Button
+                      ref={this.addButtonRef}
                       size='s'
                       text="Добавь в избранное"
                       onClick={this.addFavorite}
