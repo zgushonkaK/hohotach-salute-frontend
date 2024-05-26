@@ -68,6 +68,7 @@ export class App extends React.Component {
     this.favButtonRef = React.createRef();
     this.genButtonRef = React.createRef();
     this.addButtonRef = React.createRef();
+    this.closeButtonRef = React.createRef();
 
     this.assistant = initializeAssistant(() => this.getStateForAssistant());
 
@@ -128,10 +129,14 @@ export class App extends React.Component {
           break;
         case 'ArrowLeft':
           event.preventDefault();
-          if (!document.activeElement || !this.isButton(document.activeElement)) {
-            this.genButtonRef.current.focus();
-          } else if (document.activeElement === this.addButtonRef.current) {
-            this.genButtonRef.current.focus();
+          if (!this.state.showFavorites) {
+            if (!document.activeElement || !this.isButton(document.activeElement)) {
+              this.genButtonRef.current.focus();
+            } else if (document.activeElement === this.addButtonRef.current) {
+              this.genButtonRef.current.focus();
+            }
+          } else {
+            this.closeButtonRef.current.focus();
           }
           break;
         case 'ArrowRight':
@@ -154,7 +159,9 @@ export class App extends React.Component {
             }
           } else {
             event.preventDefault();
-            if (currentIndex !== -1) {
+            if (document.activeElement === this.closeButtonRef.current){
+              this.toggleFavorites();
+            } else if (currentIndex !== -1) {
               favoriteButtons[currentIndex].click();
             }
           }
@@ -336,6 +343,7 @@ export class App extends React.Component {
               <div className="App-overlay">
                 <div className="App-favorites-container" style={{background: overlay}}>
                       <ActionButton
+                          ref={this.closeButtonRef}
                           size="m"
                           pin="circle-circle"
                           view="overlay"
