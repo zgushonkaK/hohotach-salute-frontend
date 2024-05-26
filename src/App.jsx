@@ -348,7 +348,7 @@ export class App extends React.Component {
                           pin="circle-circle"
                           view="overlay"
                           onClick={this.toggleFavorites}
-                          style={{paddingLeft: "1.5rem"}}
+                          style={{marginLeft: ".5rem"}}
                       >
                         <IconCross/>
                       </ActionButton>
