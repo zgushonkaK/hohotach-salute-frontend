@@ -30,6 +30,7 @@ const DocStyles = createGlobalStyle`
     background-color: ${background};
     background-image: ${gradient};
     min-height: 100vh;
+    font-size: 32px;
   }
 `;
 
@@ -181,7 +182,7 @@ export class App extends React.Component {
         text: this.state.text,
         favorites: this.state.favorites,
         joke_id: this.state.joke_id,
-      },
+      }
     };
     console.log('getStateForAssistant: state:', state)
     return state;
@@ -214,6 +215,24 @@ export class App extends React.Component {
           throw new Error();
       }
     }
+  }
+
+  _send_action_value(action_id) {
+    const data = {
+      action: {
+        action_id: action_id,
+        parameters: {
+          showFavorites: this.state.showFavorites,
+
+        },
+      },
+    };
+    const unsubscribe = this.assistant.sendData(data, (data) => {
+      // функция, вызываемая, если на sendData() был отправлен ответ
+      const { type, payload } = data;
+      console.log('sendData onData:', type, payload);
+      unsubscribe();
+    });
   }
 
   fillTextField = async () => {
@@ -299,12 +318,6 @@ export class App extends React.Component {
     }));
   };
 
-  toggleInfo = () => {
-    this.setState((prevState) => ({
-      showInfo: !prevState.showInfo,
-    }));
-  };
-
   handleFavoriteClick = async (text) => {
     this.setState({text: text, caption: ''});
   };
@@ -347,7 +360,10 @@ export class App extends React.Component {
                           size="m"
                           pin="circle-circle"
                           view="overlay"
-                          onClick={this.toggleFavorites}
+                          onClick={() => {
+                            this.toggleFavorites;
+                            this._send_action_value('toggle_close');
+                          }}
                           style={{marginLeft: ".5rem"}}
                       >
                         <IconCross/>
@@ -388,7 +404,10 @@ export class App extends React.Component {
                       size="s"
                       pin="circle-circle"
                       view="clear"
-                      onClick={this.toggleFavorites}
+                      onClick={() => {
+                        this.toggleFavorites;
+                        this._send_action_value('toggle_open');
+                      }}
                       className="App-fav-button"
                       contentLeft={<IconHeart/>}>
                   </Button>
@@ -409,7 +428,10 @@ export class App extends React.Component {
                 <Card style={{minWidth: '10vw', maxWidth: '70vw', minHeight: '5rem'}}>
                   <CardContent compact>
                     <Cell
-                        content={<TextBox title={this.state.text} caption={this.state.caption}/>}
+                        content={<TextBox
+                                    style={{fontSize: "20px"}}
+                                    title={this.state.text}
+                                    caption={this.state.caption}/>}
                     />
                   </CardContent>
                 </Card>
