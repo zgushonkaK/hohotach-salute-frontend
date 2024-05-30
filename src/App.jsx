@@ -194,6 +194,7 @@ export class App extends React.Component {
       switch (action.type) {
         case 'generate_joke':
           this.fillTextField();
+          //this._send_action_value('read_joke');
           break;
         case 'initialize_user':
           this.setState({
@@ -223,10 +224,29 @@ export class App extends React.Component {
         action_id: action_id,
         parameters: {
           showFavorites: this.state.showFavorites,
-
+          joke: this.state.text,
         },
       },
     };
+    console.log('popa', this.state.text);
+    const unsubscribe = this.assistant.sendData(data, (data) => {
+      // функция, вызываемая, если на sendData() был отправлен ответ
+      const { type, payload } = data;
+      console.log('sendData onData:', type, payload);
+      unsubscribe();
+    });
+  }
+
+  _send_joke_value(action_id, joke_text) {
+    const data = {
+      action: {
+        action_id: action_id,
+        parameters: {
+          joke: joke_text,
+        },
+      },
+    };
+    console.log('popa', this.state.text);
     const unsubscribe = this.assistant.sendData(data, (data) => {
       // функция, вызываемая, если на sendData() был отправлен ответ
       const { type, payload } = data;
@@ -240,6 +260,7 @@ export class App extends React.Component {
     try{
       const response = await api.get('/get_joke_from_api');
       this.setState({text: response.data.content, caption: ''});
+      this._send_joke_value('read_joke', response.data.content);
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -361,7 +382,7 @@ export class App extends React.Component {
                           pin="circle-circle"
                           view="overlay"
                           onClick={() => {
-                            this.toggleFavorites;
+                            this.toggleFavorites();
                             this._send_action_value('toggle_close');
                           }}
                           style={{marginLeft: ".5rem"}}
@@ -385,6 +406,7 @@ export class App extends React.Component {
                                     onClick={() => {
                                       this.handleFavoriteClick(favorite.text);
                                       this.toggleFavorites();
+                                      this._send_action_value('toggle_joke');
                                     }}>
                             </Button>
                           </div>
@@ -405,7 +427,7 @@ export class App extends React.Component {
                       pin="circle-circle"
                       view="clear"
                       onClick={() => {
-                        this.toggleFavorites;
+                        this.toggleFavorites();
                         this._send_action_value('toggle_open');
                       }}
                       className="App-fav-button"
