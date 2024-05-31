@@ -7,11 +7,12 @@ body {
   margin: 0; /* Remove default margins */
   padding: 0; /* Remove default paddings */
   box-sizing: border-box; /* Include paddings and borders in the element's total width and height */
+
 }
 
 .App {
   margin-top: .5rem;
-  margin-bottom: .5rem;
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,11 +46,23 @@ body {
 .App-footer {
   padding: 20px;
   flex-grow: 1;
-  margin-bottom: 3rem;
+  margin-bottom: 7rem;
 }
 
 :root {
   --hover-color: initial;
+}
+
+.App-gen-button:focus {
+  background-color: var(--hover-color) !important;
+}
+
+.App-add-button:focus {
+  background-color: var(--hover-color) !important;
+}
+
+.App-fav-button:focus {
+  background-color: #C7234C
 }
 
 .App-gen-button:hover {
@@ -64,9 +77,6 @@ body {
   background-color: #C7234C
 }
 
-.App-info-button:hover {
-  background-color: #129DFA
-}
 
 .App-overlay {
   position: fixed;
@@ -90,10 +100,11 @@ body {
 .App-favorites-container {
   border-radius: 15px;
   padding: .75rem;
-  max-height: 70%;
+  max-height: 60%;
   overflow-y: auto;
   min-width: 12rem;
   overflow-x: hidden;
+  margin-bottom: 4rem;
 }
 
 .App-favorites-container ul {
