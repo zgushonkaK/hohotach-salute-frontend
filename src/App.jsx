@@ -152,6 +152,7 @@ export class App extends React.Component {
             event.preventDefault();
             if (document.activeElement === this.favButtonRef.current) {
               this.toggleFavorites();
+              this._send_action_value('toggle_open');
             } else if (document.activeElement === this.genButtonRef.current) {
               this.fillTextField();
             } else if (document.activeElement === this.addButtonRef.current) {
@@ -161,6 +162,7 @@ export class App extends React.Component {
             event.preventDefault();
             if (document.activeElement === this.closeButtonRef.current){
               this.toggleFavorites();
+              this._send_action_value('toggle_close');
             } else if (currentIndex !== -1) {
               favoriteButtons[currentIndex].click();
             }
