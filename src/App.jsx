@@ -12,7 +12,7 @@ import {
   Cell,
   Col, Container,
   Row,
-  TextBox
+  TextBox, TextBoxCaption
 } from '@salutejs/plasma-ui';
 import {IconCross, IconHeart, IconTrashFilled} from '@salutejs/plasma-icons';
 
@@ -30,7 +30,6 @@ const DocStyles = createGlobalStyle`
     background-color: ${background};
     background-image: ${gradient};
     min-height: 100vh;
-    font-size: 32px;
   }
 `;
 
@@ -401,8 +400,9 @@ export class App extends React.Component {
                           <div key={favorite.id} className="App-list-item">
                             <Button ref={(ref) => { this.favoriteButtons[index] = ref; }}
                                     view="clear"
-                                    size="s"
+                                    size="m"
                                     text={favorite.name}
+                                    style={{fontSize: "larger"}}
                                     onClick={() => {
                                       this.handleFavoriteClick(favorite.text);
                                       this.toggleFavorites();
@@ -423,7 +423,7 @@ export class App extends React.Component {
                      offsetS={3} offsetM={6} offsetL={8} offsetXL={12}>
                   <Button
                       ref={this.favButtonRef}
-                      size="s"
+                      size="m"
                       pin="circle-circle"
                       view="clear"
                       onClick={() => {
@@ -431,7 +431,7 @@ export class App extends React.Component {
                         this._send_action_value('toggle_open');
                       }}
                       className="App-fav-button"
-                      contentLeft={<IconHeart/>}>
+                      contentLeft={<IconHeart size={"m"}/>}>
                   </Button>
                 </Col>
               </Row>
@@ -447,13 +447,16 @@ export class App extends React.Component {
 
             <Row>
               <main className="App-main">
-                <Card style={{minWidth: '10vw', maxWidth: '70vw', minHeight: '5rem'}}>
+                <Card style={{minWidth: '10vw',
+                              maxWidth: '75vw',
+                              minHeight: '5rem',
+                              fontSize: "larger"}}>
                   <CardContent compact>
                     <Cell
-                        content={<TextBox
-                                    style={{fontSize: "20px"}}
-                                    title={this.state.text}
-                                    caption={this.state.caption}/>}
+                        content={<TextBox size="l">
+                                    <TextBoxCaption>{this.state.caption}</TextBoxCaption>
+                                    {this.state.text}
+                          </TextBox>}
                     />
                   </CardContent>
                 </Card>
@@ -466,11 +469,12 @@ export class App extends React.Component {
                      style={{marginBottom: '.5rem'}}>
                   <Button
                       ref={this.genButtonRef}
-                      size='s'
+                      size="l"
                       text="Сгенерируй анекдот"
                       onClick={this.fillTextField.bind(this)}
                       className="App-gen-button"
-                      style={{'--hover-color': accent}}>
+                      style={{'--hover-color': accent,
+                              fontSize: "larger"}}>
                   </Button>
                 </Col>
 
@@ -478,11 +482,12 @@ export class App extends React.Component {
                      offsetS={0} offsetM={1.1} offsetL={1.1} offsetXL={2.1}>
                   <Button
                       ref={this.addButtonRef}
-                      size='s'
+                      size="l"
                       text="Добавь в избранное"
                       onClick={this.addFavorite}
                       className="App-add-button"
-                      style={{'--hover-color': this.getColor()}}>
+                      style={{'--hover-color': this.getColor(),
+                              fontSize: "larger"}}>
                   </Button>
                 </Col>
               </Row>

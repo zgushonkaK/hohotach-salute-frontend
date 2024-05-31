@@ -12,7 +12,7 @@ body {
 
 .App {
   margin-top: .5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,6 +53,18 @@ body {
   --hover-color: initial;
 }
 
+.App-gen-button:focus {
+  background-color: var(--hover-color) !important;
+}
+
+.App-add-button:focus {
+  background-color: var(--hover-color) !important;
+}
+
+.App-fav-button:focus {
+  background-color: #C7234C
+}
+
 .App-gen-button:hover {
   background-color: var(--hover-color) !important;
 }
@@ -65,9 +77,6 @@ body {
   background-color: #C7234C
 }
 
-.App-info-button:hover {
-  background-color: #129DFA
-}
 
 .App-overlay {
   position: fixed;
