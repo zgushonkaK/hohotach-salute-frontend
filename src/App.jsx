@@ -65,6 +65,7 @@ export class App extends React.Component {
     }
 
     this.favoriteButtons = [];
+    this.favoriteDeleteButtons = [];
     this.favButtonRef = React.createRef();
     this.genButtonRef = React.createRef();
     this.addButtonRef = React.createRef();
@@ -91,6 +92,7 @@ export class App extends React.Component {
 
     window.addEventListener('keydown', (event) => {
       const favoriteButtons = this.favoriteButtons.filter((button) => button !== null);
+      const favoriteDeleteButtons = this.favoriteDeleteButtons.filter((button) => button !== null);
       const currentIndex = favoriteButtons.findIndex((button) => button === document.activeElement);
 
       switch(event.code) {
@@ -327,7 +329,8 @@ export class App extends React.Component {
     this.setState((prevState) => ({
       favorites: prevState.favorites.filter((favorite) => favorite.id !== id),
     }));
-    await api.delete(`/delete_fav_joke?joke_id=${id}`);
+
+    await api.delete(`/delete_fav_joke?joke_id=${id}&user_id=${this.user_id}`);
     console.log('delete joke: ', id, 'user: ', this.state.user_id);
   };
 
@@ -413,7 +416,8 @@ export class App extends React.Component {
                                     }}>
                             </Button>
 
-                            <ActionButton pin="circle-circle"
+                            <ActionButton ref={(ref) => {this.favoriteDeleteButtons[index] = ref}}
+                                          pin="circle-circle"
                                           view="clear"
                                           size="m"
                                           m="3"
