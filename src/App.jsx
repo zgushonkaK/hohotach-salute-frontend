@@ -10,9 +10,9 @@ import {
   Card,
   CardContent,
   Cell,
-  Col, Container,
+  Col, Container, H2, H3,
   Row,
-  TextBox, TextBoxCaption
+  TextBox, TextBoxCaption, TextL
 } from '@salutejs/plasma-ui';
 import {IconCross, IconHeart, IconTrashFilled} from '@salutejs/plasma-icons';
 
@@ -328,6 +328,7 @@ export class App extends React.Component {
       favorites: prevState.favorites.filter((favorite) => favorite.id !== id),
     }));
     await api.delete(`/delete_fav_joke?joke_id=${id}`);
+    console.log('delete joke: ', id, 'user: ', this.state.user_id);
   };
 
 
@@ -392,7 +393,7 @@ export class App extends React.Component {
                       </ActionButton>
 
                     <div className="App-overlay-header">
-                        <BodyL>Избранное</BodyL>
+                        <TextL>Избранное</TextL>
                     </div>
 
 
@@ -411,6 +412,17 @@ export class App extends React.Component {
                                       this._send_action_value('toggle_joke');
                                     }}>
                             </Button>
+
+                            <ActionButton pin="circle-circle"
+                                          view="clear"
+                                          size="m"
+                                          m="3"
+                                          onClick={(e) => {
+                                            e.stopPropagation(); // Stop event propagation
+                                            this.removeFavorite(favorite.id);
+                                          }}>
+                              <IconTrashFilled size="m"/>
+                            </ActionButton>
                           </div>
                         </li>
                     ))}
@@ -422,7 +434,8 @@ export class App extends React.Component {
             <Container>
               <Row>
                 <Col sizeS={1} sizeM={2} sizeL={3} sizeXL={4}
-                     offsetS={3} offsetM={6} offsetL={8} offsetXL={12}>
+                     offsetS={3} offsetM={5} offsetL={7} offsetXL={11}
+                     style={{marginTop:"1rem"}}>
                   <Button
                       ref={this.favButtonRef}
                       size="m"
@@ -433,7 +446,7 @@ export class App extends React.Component {
                         this._send_action_value('toggle_open');
                       }}
                       className="App-fav-button"
-                      contentLeft={<IconHeart size={"m"}/>}>
+                      contentLeft={<IconHeart/>}>
                   </Button>
                 </Col>
               </Row>
