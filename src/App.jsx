@@ -361,6 +361,10 @@ export class App extends React.Component {
     }
   }
 
+  isFav = (text) => {
+    return this.state.favorites.some(fav => fav.text === text);
+  }
+
   render(){
     return (
         <body>
@@ -505,6 +509,7 @@ export class App extends React.Component {
                       text="Добавь в избранное"
                       onClick={this.addFavorite}
                       className="App-add-button"
+                      disabled={this.isFav(this.state.text)}
                       style={{'--hover-color': this.getColor(),
                               fontSize: "larger"}}>
                   </Button>
