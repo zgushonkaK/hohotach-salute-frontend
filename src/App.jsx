@@ -94,6 +94,7 @@ export class App extends React.Component {
       const favoriteButtons = this.favoriteButtons.filter((button) => button !== null);
       const favoriteDeleteButtons = this.favoriteDeleteButtons.filter((button) => button !== null);
       const currentIndex = favoriteButtons.findIndex((button) => button === document.activeElement);
+      const deleteIndex = favoriteDeleteButtons.findIndex((button) => button === document.activeElement);
 
       switch(event.code) {
         case 'ArrowDown':
@@ -143,10 +144,16 @@ export class App extends React.Component {
           break;
         case 'ArrowRight':
           event.preventDefault();
-          if (!document.activeElement || !this.isButton(document.activeElement)) {
-            this.genButtonRef.current.focus();
-          } else if (document.activeElement === this.genButtonRef.current) {
-            this.addButtonRef.current.focus();
+          if (!this.state.showFavorites) {
+            if (!document.activeElement || !this.isButton(document.activeElement)) {
+              this.genButtonRef.current.focus();
+            } else if (document.activeElement === this.genButtonRef.current) {
+              this.addButtonRef.current.focus();
+            }
+          } else {
+            if (favoriteButtons[currentIndex] === document.activeElement) {
+              favoriteDeleteButtons[currentIndex].focus();
+            }
           }
           break;
         case 'Enter':
@@ -167,6 +174,8 @@ export class App extends React.Component {
               this._send_action_value('toggle_close');
             } else if (currentIndex !== -1) {
               favoriteButtons[currentIndex].click();
+            } else if (deleteIndex !== -1) { 
+              favoriteDeleteButtons[deleteIndex].click();
             }
           }
           break;
@@ -185,6 +194,7 @@ export class App extends React.Component {
         text: this.state.text,
         favorites: this.state.favorites,
         joke_id: this.state.joke_id,
+        is_fav: this.isFav(this.state.text),
       }
     };
     console.log('getStateForAssistant: state:', state)
@@ -264,6 +274,9 @@ export class App extends React.Component {
       const response = await api.get('/get_joke_from_api');
       this.setState({text: response.data.content, caption: ''});
       this._send_joke_value('read_joke', response.data.content);
+      if (this.isFav(response.data.content)){
+        this._send_action_value('fav_joke');
+      }
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -346,6 +359,7 @@ export class App extends React.Component {
 
   handleFavoriteClick = async (text) => {
     this.setState({text: text, caption: ''});
+    this._send_action_value('fav_joke');
   };
 
   getColor = () => {
