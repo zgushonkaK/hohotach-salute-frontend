@@ -377,7 +377,7 @@ export class App extends React.Component {
 
   isFav = (text) => {
     if (text === "") {
-      return "0";
+      return true;
     }
     return this.state.favorites.some(fav => fav.text === text);
   }
