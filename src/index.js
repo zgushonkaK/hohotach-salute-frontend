@@ -13,7 +13,7 @@ const rootElement = document.getElementById('root');
 const detectDeviceCallback = () => detectDevice();
 
 ReactDOM.createRoot(rootElement).render(
-    <DeviceThemeProvider detectDeviceCallback={detectDeviceCallback}>
+    <DeviceThemeProvider detectDeviceCallback={detectDeviceCallback} responsiveTypo={true}>
         <SSRProvider>
             <App />
         </SSRProvider>

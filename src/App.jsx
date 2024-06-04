@@ -10,7 +10,7 @@ import {
   Card,
   CardContent,
   Cell,
-  Col, Container, H2, H3,
+  Col, Container,
   Row,
   TextBox, TextBoxCaption, TextL
 } from '@salutejs/plasma-ui';
@@ -18,7 +18,7 @@ import {IconCross, IconHeart, IconTrashFilled} from '@salutejs/plasma-icons';
 
 import './App.css';
 import api from './api.js'
-import logo from './images/HOHOTACHv2.png'
+import logo from './images/HOHOTACHv3.png'
 
 const ThemeBackgroundEva = createGlobalStyle(salutejs_eva__dark);
 const ThemeBackgroundJoy = createGlobalStyle(salutejs_joy__dark);
@@ -390,7 +390,7 @@ export class App extends React.Component {
                             this.toggleFavorites();
                             this._send_action_value('toggle_close');
                           }}
-                          style={{marginLeft: ".5rem"}}
+                          style={{marginLeft: "1rem", marginTop: "1rem"}}
                       >
                         <IconCross/>
                       </ActionButton>
