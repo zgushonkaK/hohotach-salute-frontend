@@ -62,6 +62,7 @@ export class App extends React.Component {
       showPopup: false,
       showInfo: false,
       fav_joke_text: '',
+      can_generate: true,
     }
 
     this.favoriteButtons = [];
@@ -363,6 +364,14 @@ export class App extends React.Component {
     this._send_action_value('toggle_joke');
   };
 
+  handleGenerateClick = () => {
+    if (this.state.can_generate) {
+      this.fillTextField();
+      this.setState({ can_generate: false });
+      setTimeout(() => this.setState({ can_generate: true }), 2000);
+    }
+  };
+
   getColor = () => {
     switch (this.state.characterID) {
       case 'Сбер':
@@ -513,11 +522,13 @@ export class App extends React.Component {
                       ref={this.genButtonRef}
                       size="l"
                       text="Сгенерируй анекдот"
-                      onClick={this.fillTextField.bind(this)}
+                      onClick={() => {
+                        this.handleGenerateClick();
+                      }}
+                      disabled={!this.state.can_generate}
                       className="App-gen-button"
-                      style={{'--hover-color': accent,
-                              fontSize: "larger"}}>
-                  </Button>
+                      style={{'--hover-color': accent, fontSize: "larger"}}
+                  />
                 </Col>
 
                 <Col sizeS={10} sizeM={1} sizeL={3} sizeXL={4}
