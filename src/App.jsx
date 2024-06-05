@@ -324,6 +324,7 @@ export class App extends React.Component {
     if (alias.trim() !== '' && joke_id !== '') {
       const joke_exists = this.state.favorites.some(fav => fav.id === joke_id);
       if (!joke_exists) {
+        this._send_action_value('toggle_joke');
         this.setState((state) => ({
           favorites: [...state.favorites, { id: joke_id, name: alias, text: text}],
         }), () => {
