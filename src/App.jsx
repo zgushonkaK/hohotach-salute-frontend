@@ -275,7 +275,7 @@ export class App extends React.Component {
       this.setState({text: response.data.content, caption: ''});
       this._send_joke_value('read_joke', response.data.content);
       if (this.isFav(response.data.content)){
-        this._send_action_value('fav_joke');
+        this._send_action_value('toggle_joke');
       }
       console.log(response);
     } catch (error) {
@@ -359,7 +359,7 @@ export class App extends React.Component {
 
   handleFavoriteClick = async (text) => {
     this.setState({text: text, caption: ''});
-    this._send_action_value('fav_joke');
+    this._send_action_value('toggle_joke');
   };
 
   getColor = () => {
@@ -442,6 +442,7 @@ export class App extends React.Component {
                                           view="clear"
                                           size="m"
                                           m="3"
+                                          style={{marginRight: ".5rem"}}
                                           onClick={(e) => {
                                             e.stopPropagation(); // Stop event propagation
                                             this.removeFavorite(favorite.id);
