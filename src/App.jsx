@@ -523,6 +523,7 @@ export class App extends React.Component {
                       size="l"
                       text="Сгенерируй анекдот"
                       onClick={() => {
+                        this.assistant.cancelTts();
                         this.handleGenerateClick();
                       }}
                       disabled={!this.state.can_generate}
