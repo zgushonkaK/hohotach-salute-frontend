@@ -242,7 +242,7 @@ export class App extends React.Component {
         },
       },
     };
-    console.log('popa', this.state.text);
+    console.log('joke text: ', this.state.text);
     const unsubscribe = this.assistant.sendData(data, (data) => {
       // функция, вызываемая, если на sendData() был отправлен ответ
       const { type, payload } = data;
@@ -260,7 +260,7 @@ export class App extends React.Component {
         },
       },
     };
-    console.log('popa', this.state.text);
+    console.log('joke text: ', this.state.text);
     const unsubscribe = this.assistant.sendData(data, (data) => {
       // функция, вызываемая, если на sendData() был отправлен ответ
       const { type, payload } = data;
