@@ -3,6 +3,7 @@
 ## Авторы
 
 Гороховатский Всеволод Максимович (https://github.com/zgushonkaK)
+
 Лебкова Марина Дмитриевна (https://github.com/hedanta)
 
 ## Создание проекта "SmartApp Code":
