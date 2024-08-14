@@ -1,5 +1,10 @@
 # hohotach-salute-frontend
 
+## Авторы
+
+Гороховатский Всеволод Максимович (https://github.com/zgushonkaK)
+Лебкова Марина Дмитриевна (https://github.com/hedanta)
+
 ## Создание проекта "SmartApp Code":
 
 1. Идём на страницу SmartMarket Studio ([ссылка](https://developers.sber.ru/studio/));
